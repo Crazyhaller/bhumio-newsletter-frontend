@@ -4,16 +4,24 @@ import { ThemeProvider } from './app/providers/ThemeProvider'
 import { QueryProvider } from './app/providers/QueryProvider'
 import { AppRouter } from './app/routes/AppRouter'
 import { Toaster } from 'sonner'
+import './index.css'
 
-import './globals.css'
+async function enableMocking() {
+  if (import.meta.env.DEV) {
+    const { worker } = await import('./lib/mock/browser')
+    await worker.start()
+  }
+}
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <ThemeProvider>
-      <QueryProvider>
-        <AppRouter />
-        <Toaster richColors />
-      </QueryProvider>
-    </ThemeProvider>
-  </React.StrictMode>,
-)
+enableMocking().then(() => {
+  ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+      <ThemeProvider>
+        <QueryProvider>
+          <AppRouter />
+          <Toaster richColors />
+        </QueryProvider>
+      </ThemeProvider>
+    </React.StrictMode>,
+  )
+})

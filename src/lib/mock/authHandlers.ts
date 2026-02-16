@@ -4,7 +4,9 @@ import type { AuthResponse } from '../../types/auth'
 
 export const authHandlers = [
   http.post('/api/users/register', async ({ request }) => {
-    const body = (await request.json()) as { email: string }
+    const body = (await request.json()) as { email: string } & {
+      password: string
+    } & { organizationName: string }
 
     const existing = db.users.find((u) => u.email === body.email)
     if (existing) {
@@ -14,21 +16,27 @@ export const authHandlers = [
       )
     }
 
+    const newOrg = {
+      id: crypto.randomUUID(),
+      name: body.organizationName,
+      createdAt: new Date().toISOString(),
+    }
+
+    db.organizations.push(newOrg)
+
     const newUser = {
       id: crypto.randomUUID(),
       email: body.email,
-      organizationId: crypto.randomUUID(),
+      organizationId: newOrg.id,
       role: 'Admin' as const,
     }
 
     db.users.push(newUser)
 
-    const response: AuthResponse = {
+    return HttpResponse.json({
       token: 'mock-jwt-token',
       user: newUser,
-    }
-
-    return HttpResponse.json(response)
+    })
   }),
 
   http.post('/api/users/login', async ({ request }) => {

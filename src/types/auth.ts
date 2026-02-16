@@ -1,8 +1,16 @@
+export type UserRole = 'Superadmin' | 'Admin' | 'User'
+
+export interface Organization {
+  id: string
+  name: string
+  createdAt: string
+}
+
 export interface User {
   id: string
   email: string
   organizationId: string
-  role: 'Superadmin' | 'Admin' | 'User'
+  role: UserRole
 }
 
 export interface AuthResponse {
