@@ -1,6 +1,4 @@
 import { useEffect, useRef } from 'react'
-import grapesjs from 'grapejs'
-import 'grapejs/dist/css/grapes.min.css'
 
 export const TemplateEditor = ({
   initialContent,
@@ -15,18 +13,20 @@ export const TemplateEditor = ({
   useEffect(() => {
     if (!containerRef.current) return
 
-    editorRef.current = grapesjs.init({
-      container: containerRef.current,
-      height: '600px',
-      fromElement: false,
-      storageManager: false,
-      components: initialContent || '<h1>Hello {{email}}</h1>',
-      blockManager: {
-        appendTo: '#blocks',
-      },
-    })
+    let editorInstance: any
 
-    addMergeTagBlocks(editorRef.current)
+    import('grapejs').then((grapesjs) => {
+      editorInstance = grapesjs.init({
+        container: containerRef.current!,
+        height: '600px',
+        storageManager: false,
+        components: initialContent || '<h1>Hello {{email}}</h1>',
+        blockManager: { appendTo: '' },
+      })
+
+      addMergeTagBlocks(editorInstance)
+      editorRef.current = editorInstance
+    })
 
     return () => {
       editorRef.current?.destroy()
@@ -34,13 +34,12 @@ export const TemplateEditor = ({
   }, [])
 
   const handleSave = () => {
-    const html = editorRef.current.getHtml()
-    onSave(html)
+    const html = editorRef.current?.getHtml()
+    if (html) onSave(html)
   }
 
   return (
     <div className="space-y-4">
-      <div id="blocks" />
       <div ref={containerRef} />
       <button
         onClick={handleSave}
