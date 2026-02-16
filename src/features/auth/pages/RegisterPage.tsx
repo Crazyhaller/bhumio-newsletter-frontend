@@ -1,16 +1,27 @@
 import { Box, Button, TextField, Paper, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 import api from '../../../services/axios'
 import { useNavigate, Link } from 'react-router-dom'
 
-interface RegisterForm {
-  email: string
-  password: string
-}
+const schema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+})
+
+type RegisterForm = z.infer<typeof schema>
 
 export default function RegisterPage() {
-  const { register, handleSubmit } = useForm<RegisterForm>()
   const navigate = useNavigate()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterForm>({
+    resolver: zodResolver(schema),
+  })
 
   const onSubmit = async (data: RegisterForm) => {
     await api.post('/users/register', data)
@@ -23,18 +34,35 @@ export default function RegisterPage() {
         <Typography variant="h5" className="mb-4">
           Register
         </Typography>
+
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <TextField fullWidth label="Email" {...register('email')} />
+          <TextField
+            fullWidth
+            label="Email"
+            {...register('email')}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
+
           <TextField
             fullWidth
             label="Password"
             type="password"
             {...register('password')}
+            error={!!errors.password}
+            helperText={errors.password?.message}
           />
-          <Button fullWidth variant="contained" type="submit">
+
+          <Button
+            fullWidth
+            variant="contained"
+            type="submit"
+            disabled={isSubmitting}
+          >
             Register
           </Button>
         </form>
+
         <Typography className="mt-4 text-sm">
           Already have account? <Link to="/login">Login</Link>
         </Typography>

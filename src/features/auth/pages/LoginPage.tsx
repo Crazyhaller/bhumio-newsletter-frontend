@@ -1,18 +1,29 @@
 import { Box, Button, TextField, Paper, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '../useAuth'
 import api from '../../../services/axios'
 import { useNavigate, Link } from 'react-router-dom'
 
-interface LoginForm {
-  email: string
-  password: string
-}
+const schema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+})
+
+type LoginForm = z.infer<typeof schema>
 
 export default function LoginPage() {
-  const { register, handleSubmit } = useForm<LoginForm>()
   const { login } = useAuth()
   const navigate = useNavigate()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginForm>({
+    resolver: zodResolver(schema),
+  })
 
   const onSubmit = async (data: LoginForm) => {
     const res = await api.post('/auth/login', data)
@@ -26,18 +37,35 @@ export default function LoginPage() {
         <Typography variant="h5" className="mb-4">
           Login
         </Typography>
+
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <TextField fullWidth label="Email" {...register('email')} />
+          <TextField
+            fullWidth
+            label="Email"
+            {...register('email')}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
+
           <TextField
             fullWidth
             label="Password"
             type="password"
             {...register('password')}
+            error={!!errors.password}
+            helperText={errors.password?.message}
           />
-          <Button fullWidth variant="contained" type="submit">
+
+          <Button
+            fullWidth
+            variant="contained"
+            type="submit"
+            disabled={isSubmitting}
+          >
             Login
           </Button>
         </form>
+
         <Typography className="mt-4 text-sm">
           No account? <Link to="/register">Register</Link>
         </Typography>
