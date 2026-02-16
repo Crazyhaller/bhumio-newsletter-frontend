@@ -4,6 +4,7 @@ import { DashboardLayout } from '../../components/layout/DashboardLayout'
 import { RegisterPage } from '../../features/auth/RegisterPage'
 import { LoginPage } from '../../features/auth/LoginPage'
 import { ListsPage } from '../../features/lists/ListsPage'
+import { SubscribersPage } from '../../features/subscribers/SubscribersPage'
 
 // import { DashboardPage } from '@/features/dashboard/DashboardPage'
 
@@ -19,6 +20,7 @@ export const AppRouter = () => (
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="lists" element={<ListsPage />} />
+      <Route path="subscribers" element={<SubscribersPage />} />
 
       <Route
         path="/"

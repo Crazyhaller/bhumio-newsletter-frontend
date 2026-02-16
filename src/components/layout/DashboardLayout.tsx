@@ -23,6 +23,9 @@ export const DashboardLayout = () => {
           <ListItemButton component={Link} to="/lists">
             <ListItemText primary="Lists" />
           </ListItemButton>
+          <ListItemButton component={Link} to="/subscribers">
+            <ListItemText primary="Subscribers" />
+          </ListItemButton>
         </List>
       </Drawer>
 
