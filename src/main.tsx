@@ -1,21 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import AppProviders from './app/AppProviders'
-import Router from './app/router'
-import './index.css'
+import { ThemeProvider } from './app/providers/ThemeProvider'
+import { QueryProvider } from './app/providers/QueryProvider'
+import { AppRouter } from './app/routes/AppRouter'
+import { Toaster } from 'sonner'
 
-if (import.meta.env.DEV) {
-  const { worker } = await import('./mocks/browser')
-  worker.start()
-}
+import './globals.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AppProviders>
-        <Router />
-      </AppProviders>
-    </BrowserRouter>
+    <ThemeProvider>
+      <QueryProvider>
+        <AppRouter />
+        <Toaster richColors />
+      </QueryProvider>
+    </ThemeProvider>
   </React.StrictMode>,
 )
