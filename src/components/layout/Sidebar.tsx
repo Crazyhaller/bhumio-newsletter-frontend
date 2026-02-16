@@ -12,6 +12,9 @@ export default function Sidebar() {
         <ListItemButton component={Link} to="/organizations">
           <ListItemText primary="Organizations" />
         </ListItemButton>
+        <ListItemButton component={Link} to="/subscribers">
+          <ListItemText primary="Subscribers" />
+        </ListItemButton>
       </List>
     </div>
   )
