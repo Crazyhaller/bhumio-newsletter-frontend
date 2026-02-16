@@ -8,6 +8,7 @@ import { SubscribersPage } from '../../features/subscribers/SubscribersPage'
 import { CampaignsPage } from '../../features/campaigns/CampaignsPage'
 import { CreateCampaignPage } from '../../features/campaigns/CreateCampaignPage'
 import { CampaignStatsPage } from '../../features/campaigns/CampaignStatsPage'
+import { TemplatesPage } from '../../features/templates/TemplatesPage'
 
 // import { DashboardPage } from '@/features/dashboard/DashboardPage'
 
@@ -27,6 +28,8 @@ export const AppRouter = () => (
       <Route path="campaigns" element={<CampaignsPage />} />
       <Route path="campaigns/create" element={<CreateCampaignPage />} />
       <Route path="campaigns/:id/stats" element={<CampaignStatsPage />} />
+      <Route path="templates" element={<TemplatesPage />} />
+
       <Route
         path="/"
         element={

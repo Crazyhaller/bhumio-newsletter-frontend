@@ -12,6 +12,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { fetchLists } from '../../lib/api/listApi'
 import { createCampaign } from '../../lib/api/campaignApi'
+import { fetchTemplates } from '../../lib/api/templateApi'
 
 export const CreateCampaignPage = () => {
   const [subject, setSubject] = useState('')
@@ -21,6 +22,11 @@ export const CreateCampaignPage = () => {
   const { data } = useQuery({
     queryKey: ['lists'],
     queryFn: () => fetchLists(1, ''),
+  })
+
+  const { data: templates } = useQuery({
+    queryKey: ['templates'],
+    queryFn: fetchTemplates,
   })
 
   const mutation = useMutation({
@@ -52,6 +58,21 @@ export const CreateCampaignPage = () => {
           {data?.data.map((list: any) => (
             <MenuItem key={list.id} value={list.id}>
               {list.name}
+            </MenuItem>
+          ))}
+        </Select>
+
+        <Select
+          fullWidth
+          value=""
+          onChange={(e) => {
+            const selected = templates?.find((t) => t.id === e.target.value)
+            if (selected) setContent(selected.content)
+          }}
+        >
+          {templates?.map((t) => (
+            <MenuItem key={t.id} value={t.id}>
+              {t.name}
             </MenuItem>
           ))}
         </Select>
