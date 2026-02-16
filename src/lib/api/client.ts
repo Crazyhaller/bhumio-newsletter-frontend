@@ -7,8 +7,10 @@ export const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const token = useAuthStore.getState().token
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
+  const org = useAuthStore.getState().currentOrg
+
+  if (token) config.headers.Authorization = `Bearer ${token}`
+  if (org) config.headers['x-org-id'] = org.id
+
   return config
 })
