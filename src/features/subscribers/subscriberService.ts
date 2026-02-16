@@ -16,3 +16,8 @@ export const createSubscriber = async (data: any) => {
   const res = await api.post('/subscribers', data)
   return res.data
 }
+
+export const updateSubscriber = async (id: string, data: any) => {
+  const res = await api.put(`/subscribers/${id}`, data)
+  return res.data
+}

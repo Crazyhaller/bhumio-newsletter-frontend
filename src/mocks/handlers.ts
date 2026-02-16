@@ -91,4 +91,24 @@ export const handlers = [
     subscribers.push(newSub)
     return HttpResponse.json(newSub)
   }),
+
+  http.put('/api/subscribers/:id', async ({ params, request }) => {
+    const { id } = params
+    const body = (await request.json()) as {
+      email: string
+      custom_fields?: { firstName?: string }
+    }
+
+    subscribers = subscribers.map((s) =>
+      s.id === id
+        ? {
+            ...s,
+            email: body.email,
+            custom_fields: { firstName: body.custom_fields?.firstName || '' },
+          }
+        : s,
+    )
+
+    return HttpResponse.json({ success: true })
+  }),
 ]

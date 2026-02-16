@@ -1,7 +1,20 @@
 import type { Subscriber } from '../../../types/subscriber'
-import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
+import {
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  IconButton,
+} from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
 
-export default function SubscriberTable({ data }: { data: Subscriber[] }) {
+interface Props {
+  data: Subscriber[]
+  onEdit: (subscriber: Subscriber) => void
+}
+
+export default function SubscriberTable({ data, onEdit }: Props) {
   return (
     <Table>
       <TableHead>
@@ -9,6 +22,7 @@ export default function SubscriberTable({ data }: { data: Subscriber[] }) {
           <TableCell>Email</TableCell>
           <TableCell>Custom Fields</TableCell>
           <TableCell>Created</TableCell>
+          <TableCell />
         </TableRow>
       </TableHead>
       <TableBody>
@@ -23,6 +37,11 @@ export default function SubscriberTable({ data }: { data: Subscriber[] }) {
               ))}
             </TableCell>
             <TableCell>{new Date(sub.created_at).toLocaleString()}</TableCell>
+            <TableCell>
+              <IconButton onClick={() => onEdit(sub)}>
+                <EditIcon />
+              </IconButton>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

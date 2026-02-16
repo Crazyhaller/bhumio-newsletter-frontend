@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Typography, Button, Paper, TextField, Pagination } from '@mui/material'
 import SubscriberTable from '../components/SubscriberTable'
-import CreateSubscriberDialog from '../components/CreateSubscriberDialog'
+import SubscriberDialog from '../components/SubscriberDialog'
 import { getSubscribers } from '../subscriberService'
 import type { PaginatedSubscribers } from '../../../types/subscriber'
 
@@ -10,6 +10,7 @@ export default function SubscribersPage() {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
   const [open, setOpen] = useState(false)
+  const [selected, setSelected] = useState<any>(null)
 
   const load = async () => {
     const res = await getSubscribers(page, 10, search)
@@ -35,7 +36,17 @@ export default function SubscribersPage() {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      <Paper>{data && <SubscriberTable data={data.data} />}</Paper>
+      <Paper>
+        {data && (
+          <SubscriberTable
+            data={data.data}
+            onEdit={(sub) => {
+              setSelected(sub)
+              setOpen(true)
+            }}
+          />
+        )}
+      </Paper>
 
       {data && (
         <Pagination
@@ -45,9 +56,11 @@ export default function SubscribersPage() {
         />
       )}
 
-      <CreateSubscriberDialog
+      <SubscriberDialog
         open={open}
+        subscriber={selected}
         onClose={() => {
+          setSelected(null)
           setOpen(false)
           load()
         }}
