@@ -1,18 +1,11 @@
-import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Paper,
-  Select,
-  MenuItem,
-} from '@mui/material'
+import { Box, TextField, Button, Paper, Select, MenuItem } from '@mui/material'
 import { useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { fetchLists } from '../../lib/api/listApi'
 import { createCampaign } from '../../lib/api/campaignApi'
 import { fetchTemplates } from '../../lib/api/templateApi'
+import { PageHeader } from '../../components/ui/PageHeader'
 
 export const CreateCampaignPage = () => {
   const [subject, setSubject] = useState('')
@@ -40,7 +33,10 @@ export const CreateCampaignPage = () => {
 
   return (
     <Box className="space-y-6">
-      <Typography variant="h5">Create Campaign</Typography>
+      <PageHeader
+        title="Create Campaign"
+        subtitle="Create a new email campaign by filling out the form below. Choose a subject, select a recipient list, and either write your own HTML content or select from existing templates to get started."
+      />
 
       <Paper className="p-4 space-y-4">
         <TextField

@@ -14,9 +14,8 @@ import {
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { fetchLists, createList } from '../../lib/api/listApi'
-
-import { toast } from 'sonner'
 import { useAuthStore } from '../../app/store/authStore'
+import { PageHeader } from '../../components/ui/PageHeader'
 
 export const ListsPage = () => {
   const [page, setPage] = useState(1)
@@ -34,10 +33,49 @@ export const ListsPage = () => {
 
   const mutation = useMutation({
     mutationFn: createList,
-    onSuccess: () => {
-      toast.success('List created')
-      setNewName('')
-      queryClient.invalidateQueries({ queryKey: ['lists'] })
+
+    onMutate: async (name) => {
+      await queryClient.cancelQueries({
+        queryKey: ['lists', page, search, org?.id],
+      })
+
+      const previousData = queryClient.getQueryData([
+        'lists',
+        page,
+        search,
+        org?.id,
+      ])
+
+      queryClient.setQueryData(
+        ['lists', page, search, org?.id],
+        (old: any) => ({
+          ...old,
+          data: [
+            {
+              id: 'temp-id',
+              name,
+              createdAt: new Date().toISOString(),
+            },
+            ...(old?.data || []),
+          ],
+          total: (old?.total || 0) + 1,
+        }),
+      )
+
+      return { previousData }
+    },
+
+    onError: (_err, _newList, context) => {
+      queryClient.setQueryData(
+        ['lists', page, search, org?.id],
+        context?.previousData,
+      )
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['lists'],
+      })
     },
   })
 
@@ -47,7 +85,10 @@ export const ListsPage = () => {
 
   return (
     <Box className="space-y-6">
-      <Typography variant="h5">Lists</Typography>
+      <PageHeader
+        title="Lists"
+        subtitle="Manage your private subscriber lists"
+      />
 
       <Paper className="p-4 flex gap-4">
         <TextField

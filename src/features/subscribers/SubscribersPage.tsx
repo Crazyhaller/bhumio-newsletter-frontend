@@ -18,6 +18,7 @@ import { fetchSubscribers, createSubscriber } from '../../lib/api/subscriberApi'
 import { CustomFieldsBuilder } from './CustomFieldsBuilder'
 import { CsvImport } from './CsvImport'
 import { useAuthStore } from '../../app/store/authStore'
+import { PageHeader } from '../../components/ui/PageHeader'
 
 export const SubscribersPage = () => {
   const [page, setPage] = useState(1)
@@ -47,7 +48,10 @@ export const SubscribersPage = () => {
 
   return (
     <Box className="space-y-6">
-      <Typography variant="h5">Subscribers</Typography>
+      <PageHeader
+        title="Subscribers"
+        subtitle="Manage your email subscribers and their custom fields"
+      />
 
       <Paper className="p-4 space-y-4">
         <TextField

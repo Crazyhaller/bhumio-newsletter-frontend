@@ -1,6 +1,5 @@
 import {
   Box,
-  Typography,
   Paper,
   Button,
   Table,
@@ -12,6 +11,7 @@ import {
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { fetchCampaigns, sendCampaign } from '../../lib/api/campaignApi'
 import { useNavigate } from 'react-router-dom'
+import { PageHeader } from '../../components/ui/PageHeader'
 
 export const CampaignsPage = () => {
   const { data } = useQuery({
@@ -31,7 +31,10 @@ export const CampaignsPage = () => {
 
   return (
     <Box className="space-y-6">
-      <Typography variant="h5">Campaigns</Typography>
+      <PageHeader
+        title="Campaigns"
+        subtitle="Manage your email campaigns. Create new campaigns, view existing ones, and track their performance. Send campaigns to your subscribers and analyze the results to optimize your email marketing strategy."
+      />
 
       <Paper>
         <Table>

@@ -4,6 +4,8 @@ import { listHandlers } from './listHandlers'
 import { subscriberHandlers } from './subscriberHandler'
 import { campaignHandlers } from './campaignHandler'
 import { templateHandlers } from './templateHandlers'
+import { automationHandlers } from './automationHandlers'
+import { rssHandlers } from './rssHandlers'
 
 export const handlers = [
   ...authHandlers,
@@ -12,4 +14,6 @@ export const handlers = [
   ...subscriberHandlers,
   ...campaignHandlers,
   ...templateHandlers,
+  ...automationHandlers,
+  ...rssHandlers,
 ]

@@ -8,6 +8,7 @@ import { loginApi } from '../../lib/api/authApi'
 import { useAuthStore } from '../../app/store/authStore'
 import { useNavigate, Link } from 'react-router-dom'
 import { toast } from 'sonner'
+import { PageHeader } from '../../components/ui/PageHeader'
 
 type FormData = z.infer<typeof loginSchema>
 
@@ -42,9 +43,10 @@ export const LoginPage = () => {
   return (
     <Box className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-100 to-purple-200">
       <Paper className="p-8 w-full max-w-md shadow-xl rounded-2xl">
-        <Typography variant="h5" className="mb-6 text-center">
-          Login
-        </Typography>
+        <PageHeader
+          title="Login"
+          subtitle="Welcome back! Please enter your credentials to access your account."
+        />
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <TextField

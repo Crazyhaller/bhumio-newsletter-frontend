@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createTemplate, fetchTemplates } from '../../lib/api/templateApi'
 import { TemplateEditor } from './TemplateEditor'
+import { PageHeader } from '../../components/ui/PageHeader'
 
 export const TemplatesPage = () => {
   const [name, setName] = useState('')
@@ -23,8 +24,10 @@ export const TemplatesPage = () => {
 
   return (
     <Box className="space-y-6">
-      <Typography variant="h5">Templates</Typography>
-
+      <PageHeader
+        title="Templates"
+        subtitle="Create and manage your email templates for campaigns"
+      />
       <Paper className="p-4 space-y-4">
         <TextField
           label="Template Name"

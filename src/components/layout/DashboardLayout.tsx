@@ -8,33 +8,78 @@ import {
   AppBar,
   Toolbar,
   Typography,
+  Divider,
 } from '@mui/material'
 import { OrganizationSelector } from './OrganizationSelector'
+import type { UserRole } from '../../types/auth'
+import { useAuthStore } from '../../app/store/authStore'
+
+interface NavItem {
+  label: string
+  path: string
+  allowed: UserRole[]
+}
 
 export const DashboardLayout = () => {
+  const role = useAuthStore((s) => s.user?.role)
+
+  const navItems: NavItem[] = [
+    {
+      label: 'Dashboard',
+      path: '/',
+      allowed: ['Superadmin', 'Admin', 'User'],
+    },
+    {
+      label: 'Lists',
+      path: '/lists',
+      allowed: ['Superadmin', 'Admin'],
+    },
+    {
+      label: 'Subscribers',
+      path: '/subscribers',
+      allowed: ['Superadmin', 'Admin'],
+    },
+    {
+      label: 'Campaigns',
+      path: '/campaigns',
+      allowed: ['Superadmin', 'Admin'],
+    },
+    {
+      label: 'Create Campaign',
+      path: '/campaigns/create',
+      allowed: ['Superadmin', 'Admin'],
+    },
+    {
+      label: 'Templates',
+      path: '/templates',
+      allowed: ['Superadmin', 'Admin'],
+    },
+    {
+      label: 'Automation',
+      path: '/automation',
+      allowed: ['Superadmin', 'Admin'],
+    },
+    {
+      label: 'Organizations',
+      path: '/organizations',
+      allowed: ['Superadmin'],
+    },
+  ]
+
   return (
     <Box className="flex min-h-screen">
       {/* Sidebar */}
       <Drawer variant="permanent">
         <List sx={{ width: 240 }}>
-          <ListItemButton component={Link} to="/">
-            <ListItemText primary="Dashboard" />
-          </ListItemButton>
-          <ListItemButton component={Link} to="/lists">
-            <ListItemText primary="Lists" />
-          </ListItemButton>
-          <ListItemButton component={Link} to="/subscribers">
-            <ListItemText primary="Subscribers" />
-          </ListItemButton>
-          <ListItemButton component={Link} to="/campaigns">
-            <ListItemText primary="Campaigns" />
-          </ListItemButton>
-          <ListItemButton component={Link} to="/campaigns/create">
-            <ListItemText primary="Create Campaign" />
-          </ListItemButton>
-          <ListItemButton component={Link} to="/templates">
-            <ListItemText primary="Templates" />
-          </ListItemButton>
+          {navItems
+            .filter((item) => role && item.allowed.includes(role))
+            .map((item) => (
+              <ListItemButton key={item.path} component={Link} to={item.path}>
+                <ListItemText primary={item.label} />
+              </ListItemButton>
+            ))}
+
+          <Divider sx={{ my: 2 }} />
         </List>
       </Drawer>
 

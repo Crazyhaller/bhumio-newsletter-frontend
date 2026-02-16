@@ -8,6 +8,7 @@ import { registerApi } from '../../lib/api/authApi'
 import { useAuthStore } from '../../app/store/authStore'
 import { useNavigate, Link } from 'react-router-dom'
 import { toast } from 'sonner'
+import { PageHeader } from '../../components/ui/PageHeader'
 
 type FormData = z.infer<typeof registerSchema>
 
@@ -42,9 +43,10 @@ export const RegisterPage = () => {
   return (
     <Box className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-100 to-indigo-200">
       <Paper className="p-8 w-full max-w-md shadow-xl rounded-2xl">
-        <Typography variant="h5" className="mb-6 text-center">
-          Register
-        </Typography>
+        <PageHeader
+          title="Register"
+          subtitle="Join us today! Create your account by filling out the form below."
+        />
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <TextField
