@@ -4,6 +4,7 @@ import RegisterPage from '../features/auth/pages/RegisterPage'
 import DashboardLayout from '../components/layout/DashboardLayout'
 import DashboardPage from '../features/dashboard/DashboardPage'
 import ProtectedRoute from '../features/auth/ProtectedRoute'
+import OrganizationsPage from '../features/organizations/pages/OrganizationsPage'
 
 export default function Router() {
   return (
@@ -21,6 +22,7 @@ export default function Router() {
       >
         <Route index element={<DashboardPage />} />
       </Route>
+      <Route path="organizations" element={<OrganizationsPage />} />
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

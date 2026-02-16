@@ -1,6 +1,6 @@
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material'
-import { AuthProvider } from '../features/auth/AuthContext'
+import { AuthProvider } from '../features/auth/AuthProvider'
 
 const theme = createTheme({
   palette: {

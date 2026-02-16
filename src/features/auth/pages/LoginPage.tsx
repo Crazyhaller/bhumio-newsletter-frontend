@@ -1,6 +1,6 @@
 import { Box, Button, TextField, Paper, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { useAuth } from '../AuthContext'
+import { useAuth } from '../useAuth'
 import api from '../../../services/axios'
 import { useNavigate, Link } from 'react-router-dom'
 

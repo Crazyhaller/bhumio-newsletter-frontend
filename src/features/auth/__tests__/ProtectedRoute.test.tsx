@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import ProtectedRoute from '../ProtectedRoute'
-import { AuthProvider } from '../AuthContext'
+import { AuthProvider } from '../AuthProvider'
 import { describe, it } from 'vitest'
 
 describe('ProtectedRoute', () => {

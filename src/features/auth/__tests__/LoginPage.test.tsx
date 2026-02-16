@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import LoginPage from '../pages/LoginPage'
-import { AuthProvider } from '../AuthContext'
+import { AuthProvider } from '../AuthProvider'
 import { describe, it, expect, vi } from 'vitest'
 import api from '../../../services/axios'
 
