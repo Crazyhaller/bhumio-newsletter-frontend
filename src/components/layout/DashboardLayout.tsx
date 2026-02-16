@@ -26,6 +26,13 @@ export const DashboardLayout = () => {
           <ListItemButton component={Link} to="/subscribers">
             <ListItemText primary="Subscribers" />
           </ListItemButton>
+          <ListItemButton component={Link} to="/campaigns">
+            <ListItemText primary="Campaigns" />
+          </ListItemButton>
+
+          <ListItemButton component={Link} to="/campaigns/create">
+            <ListItemText primary="Create Campaign" />
+          </ListItemButton>
         </List>
       </Drawer>
 

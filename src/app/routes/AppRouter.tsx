@@ -5,6 +5,9 @@ import { RegisterPage } from '../../features/auth/RegisterPage'
 import { LoginPage } from '../../features/auth/LoginPage'
 import { ListsPage } from '../../features/lists/ListsPage'
 import { SubscribersPage } from '../../features/subscribers/SubscribersPage'
+import { CampaignsPage } from '../../features/campaigns/CampaignsPage'
+import { CreateCampaignPage } from '../../features/campaigns/CreateCampaignPage'
+import { CampaignStatsPage } from '../../features/campaigns/CampaignStatsPage'
 
 // import { DashboardPage } from '@/features/dashboard/DashboardPage'
 
@@ -21,7 +24,9 @@ export const AppRouter = () => (
       <Route path="/register" element={<RegisterPage />} />
       <Route path="lists" element={<ListsPage />} />
       <Route path="subscribers" element={<SubscribersPage />} />
-
+      <Route path="campaigns" element={<CampaignsPage />} />
+      <Route path="campaigns/create" element={<CreateCampaignPage />} />
+      <Route path="campaigns/:id/stats" element={<CampaignStatsPage />} />
       <Route
         path="/"
         element={
