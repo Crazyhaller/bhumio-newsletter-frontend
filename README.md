@@ -1,73 +1,244 @@
-# React + TypeScript + Vite
+# 📧 Newsletter SaaS Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Frontend Assignment – Multi-Tenant Newsletter Platform**
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Overview
 
-## React Compiler
+This repository contains the complete frontend implementation of a multi-tenant newsletter SaaS application. The UI is built with modern web technologies and communicates with a NestJS backend design. Because the backend was unstable during development, all server interactions are simulated using [MSW](https://mswjs.io/) while maintaining correct API contracts.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Tech stack:**
 
-## Expanding the ESLint configuration
+- React (Vite)
+- TypeScript
+- Material UI
+- Tailwind CSS 4.1
+- React Query
+- Zustand
+- MSW (Mock Service Worker)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🏗 Architecture
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+The codebase follows a **feature-based modular structure**:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+ ├── app/
+ │    ├── routes/
+ │    ├── store/
+ │    └── providers/
+ │
+ ├── components/
+ │    ├── layout/
+ │    ├── ui/
+ │
+ │
+ ├── features/
+ │    ├── auth/
+ │    ├── dashboard/
+ │    ├── organizations/
+ │    ├── lists/
+ │    ├── subscribers/
+ │    ├── campaigns/
+ │    ├── templates/
+ │    └── automation/
+ │
+ ├── lib/
+ │    ├── api/
+ │    ├── mock/
+ │    └── utils/
+ │
+ └── types/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Key principles
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Feature isolation
+- Multi-tenant security enforcement
+- Role-based route control
+- API abstraction layer
+- Optimistic UI updates
+- Centralized state management
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## 🔐 Multi-Tenancy & Security
+
+Security is applied on multiple layers to ensure proper isolation and access control.
+
+### 1. Organization isolation
+
+- Every request automatically includes an `x-org-id` header.
+- The mock backend filters data by organization.
+
+### 2. Role-Based Access Control (RBAC)
+
+Supported roles: `Superadmin`, `Admin`, `User`
+
+| Feature       | Superadmin | Admin | User |
+| ------------- | :--------: | :---: | :--: |
+| Dashboard     |     ✅     |  ✅   |  ✅  |
+| Lists         |     ✅     |  ✅   |  ❌  |
+| Subscribers   |     ✅     |  ✅   |  ❌  |
+| Campaigns     |     ✅     |  ✅   |  ❌  |
+| Templates     |     ✅     |  ✅   |  ❌  |
+| Automation    |     ✅     |  ✅   |  ❌  |
+| Organizations |     ✅     |  ❌   |  ❌  |
+
+Security enforcement points:
+
+- Route level (`RoleGuard`)
+- UI level (sidebar filtering)
+- API level (interceptors)
+
+### 3. Protected API wrapper
+
+Axios interceptors take care of:
+
+- Attaching JWT token
+- Attaching organization ID
+- Handling 401 responses (logout)
+- Centralized error handling
+
+---
+
+## 🧩 Features Implemented
+
+### 🔑 Authentication
+
+- Register & login
+- Token-based sessions
+- Zustand auth store
+- Protected routes via guards
+
+### 📊 Dashboard
+
+- Organization-aware statistics
+- Counts for campaigns, lists, subscribers
+- Responsive KPI cards
+
+### 🗂 List Management
+
+- Create private lists
+- Pagination & search
+- Optimistic updates
+- Organization isolation
+
+### 👥 Subscriber Management
+
+- Add subscribers manually or via CSV
+- Custom fields (JSONB simulation)
+- GPG key upload
+- Segmentation logic & filtering
+- Pagination
+
+### ✉ Campaign Management
+
+- Create campaigns with HTML content
+- Select target lists
+- Simulated sending
+- Status tracking & click stats
+
+### 📈 Click Analytics
+
+- Per-link click tracking
+- Engagement simulation
+- Campaign statistics page
+
+### 🎨 Template Editor (GrapeJS)
+
+- Drag‑and‑drop editor
+- Merge tags: `{{email}}`, `{{firstName}}`
+- Save templates scoped to an organization
+- Dynamically imported (Vite) with CDN CSS
+
+### ⚙ Automation Engine
+
+Trigger-based campaign automation:
+
+- **Triggers:** subscriber added, campaign sent, RSS new item
+- **Actions:** send campaign, create campaign from template
+- RSS simulation engine included
+
+### 🧪 Testing
+
+- Vitest & React Testing Library
+- MSW for API mocking
+- Coverage for auth flow, list creation, role enforcement, route protection
+
+### 🎨 UI System
+
+- Material UI components + Tailwind CSS utilities
+- Reusable components: `PageHeader`, `EmptyState`, `ErrorBoundary`
+- Consistent spacing, responsive layouts, clean dashboard cards
+- Role-aware sidebar rendering
+
+---
+
+## 🛠 Setup Instructions
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Initialize MSW (one-time only)
+npx msw init public/ --save
+
+# 3. Start development server
+npm run dev
+# Open http://localhost:5173
+
+# 4. Run tests
+npm run test
 ```
+
+---
+
+## 🧠 Key Technical Decisions
+
+**Why MSW?**
+
+- Backend unstable during development
+- Ensures predictable API behavior and reliable tests
+- Enables full feature implementation independent of server
+
+**Why feature-based structure?**
+
+- Scalable and maintainable
+- Clear separation of concerns
+- Easier to test and extend
+
+**Why React Query?**
+
+- Server-state management with caching
+- Automatic invalidation and optimistic updates
+- Reduced boilerplate
+
+**Why Zustand?**
+
+- Lightweight auth store with minimal renders
+- Simple and clean API
+
+---
+
+## ⚡ Enterprise Hardening
+
+- Role-based access enforcement
+- Optimistic UI updates
+- Global error boundary
+- Protected API layer
+- 404 fallback pages
+- Multi-layer security model
+
+---
+
+## 📌 Known Limitations
+
+- GrapeJS loaded via CDN (acceptable for assignment)
+- Backend data is mocked (no live database)
+- RSS feed behavior is simulated
+
+---
