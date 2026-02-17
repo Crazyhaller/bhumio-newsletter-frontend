@@ -17,11 +17,11 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   setOrganization: (org) => set({ currentOrg: org }),
 
-  login: (token, user) =>
+  login: (token, user, org?: Organization) =>
     set({
       token,
       user,
-      currentOrg: null,
+      currentOrg: org ?? null,
     }),
 
   logout: () =>

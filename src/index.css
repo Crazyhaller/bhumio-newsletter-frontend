@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* Load Inter font if not using a package */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 :root {
   --brand-primary: #5b3df5;
   --brand-secondary: #ff6b6b;
@@ -8,5 +11,20 @@
 }
 
 body {
-  @apply bg-slate-50 text-slate-800;
+  @apply bg-white text-slate-800 antialiased;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Custom Scrollbar for a slick feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-200 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-300;
 }
