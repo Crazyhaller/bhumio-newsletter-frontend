@@ -28,7 +28,7 @@ export const authHandlers = [
       id: crypto.randomUUID(),
       email: body.email,
       organizationId: newOrg.id,
-      role: 'Admin' as const,
+      role: 'Superadmin' as const,
     }
 
     db.users.push(newUser)

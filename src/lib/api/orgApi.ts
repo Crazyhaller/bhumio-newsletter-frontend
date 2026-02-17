@@ -12,3 +12,15 @@ export const createOrganization = async (
   const res = await api.post('/organizations', { name })
   return res.data
 }
+
+export const updateOrganization = async (
+  id: string,
+  name: string,
+): Promise<Organization> => {
+  const res = await api.put(`/organizations/${id}`, { name })
+  return res.data
+}
+
+export const deleteOrganization = async (id: string): Promise<void> => {
+  await api.delete(`/organizations/${id}`)
+}
